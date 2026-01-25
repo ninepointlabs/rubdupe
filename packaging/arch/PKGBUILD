@@ -1,0 +1,31 @@
+# Maintainer: timappledotcom <179739321+timappledotcom@users.noreply.github.com>
+pkgname=rubdupe
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Ruby duplicate file detector"
+arch=('any')
+url="https://github.com/timappledotcom/rubdupe"
+license=('MIT')
+depends=('ruby>=2.7')
+source=("$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  cd "$srcdir"
+  
+  install -Dm755 smart_sort.rb "$pkgdir/usr/lib/rubdupe/smart_sort.rb"
+  
+  mkdir -p "$pkgdir/usr/lib/rubdupe/lib"
+  install -Dm644 lib/*.rb "$pkgdir/usr/lib/rubdupe/lib/"
+  
+  mkdir -p "$pkgdir/usr/bin"
+  cat > "$pkgdir/usr/bin/smart_sort" << 'WRAPPER'
+#!/usr/bin/env ruby
+require '/usr/lib/rubdupe/lib/file_analyzer'
+require '/usr/lib/rubdupe/lib/intelligent_sorter'
+require '/usr/lib/rubdupe/lib/deduplicator'
+load '/usr/lib/rubdupe/smart_sort.rb'
+WRAPPER
+  
+  chmod +x "$pkgdir/usr/bin/smart_sort"
+}

@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+require_relative '../lib/file_analyzer'
+require_relative '../lib/intelligent_sorter'
+require_relative '../lib/deduplicator'
+
+# Load the main script
+load File.expand_path('../smart_sort.rb', __dir__)
